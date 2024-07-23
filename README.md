@@ -10,4 +10,6 @@ The YouTube Course Generator API is designed to facilitate the creation and mana
 
 ## Technology Used
 
-![Java](https://img.shields.io/badge/Java-17-blue?logo=java) | ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.0-green?logo=springboot) | ![JWT](https://img.shields.io/badge/JWT-1.0.0-yellow?logo=jsonwebtokens)
+![Java](https://img.shields.io/badge/Java-17-blue?logo=java) 
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.0-green?logo=springboot) 
+![JWT](https://img.shields.io/badge/JWT-1.0.0-yellow?logo=jsonwebtokens)
