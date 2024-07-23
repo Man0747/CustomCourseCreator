@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
     @GetMapping("/alone")
     public ResponseEntity<Object> userAlone(){
-        return ResponseEntity.ok("ADMIN alone can access this ApI only");
+        return ResponseEntity.ok("ADMIN alone can access this Api only");
     }
 
 }
