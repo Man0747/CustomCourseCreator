@@ -9,7 +9,7 @@ public class PromptResponse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "response_text")
+    @Column(name = "response_text",length = 65535)
     private String responseText;
 
     public PromptResponse() {

@@ -9,7 +9,7 @@ public class Prompt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "prompt_text")
+    @Column(name = "prompt_text",length = 65535)
     private String promptText;
 
     @OneToOne(cascade = CascadeType.ALL)

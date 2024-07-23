@@ -20,7 +20,7 @@ public class ChatBot {
     @Column(name = "source_url")
     private List<String> sourceUrls;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Prompt> prompts;
 
     public ChatBot() {
