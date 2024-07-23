@@ -1,7 +1,5 @@
 # YouTube Course Generator API
 
-## API Description
-
 The YouTube Course Generator API interacts with the frontend of the YouTube Course Generator application, which is built using Java and Spring Boot. This API facilitates the creation and management of courses derived from YouTube content.
 
 ## Overview
