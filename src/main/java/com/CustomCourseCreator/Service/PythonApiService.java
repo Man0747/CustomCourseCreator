@@ -8,9 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.Map;
 
 @Service
@@ -46,19 +44,4 @@ public class PythonApiService {
         return response;
     }
 
-    public ResponseEntity<String> getWithPrompt(String url, String prompt) {
-        // Build the URL with the prompt parameter
-        String finalUrl = UriComponentsBuilder.fromHttpUrl(url)
-                .queryParam("prompt", prompt)
-                .toUriString();
-
-        // Create headers if needed (optional for GET request)
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Accept", "application/json");
-
-        // Create the HttpEntity (can be null for GET requests)
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        return restTemplate.exchange(finalUrl, HttpMethod.GET, entity, String.class);
-    }
 }
