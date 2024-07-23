@@ -24,4 +24,4 @@ For more information and to access the API code, visit the [API Repository](http
 
 ## Note
 
-This API uses ([http://example.com/api/generate](https://github.com/vishnurchityala/youtube-course-gen-api)) to generate prompts and course materials. Replace the link with the actual API URL.
+This API uses ([API Repository](https://github.com/vishnurchityala/youtube-course-gen-api)) to generate prompts and course materials. Replace the link with the actual API URL.
