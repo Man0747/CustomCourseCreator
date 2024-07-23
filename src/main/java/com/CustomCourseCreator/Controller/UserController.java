@@ -61,6 +61,22 @@ public class UserController {
         return ResponseEntity.ok(chatBot);
     }
 
+    // Endpoint to get all chats of ChatBot
+    @GetMapping("/chatbots/{chatBotId}")
+    public ResponseEntity<Object> findChatBot(@PathVariable Integer chatBotId){
+
+        // Fetching ChatBot
+        ChatBot chatBot =  null;
+        try {
+            chatBot = this.chatBotRepo.getReferenceById(chatBotId);
+        }
+        catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(chatBot.getPrompts());
+    }
+
     // Endpoint for updating a ChatBot
     @PutMapping("/chatbots/{chatBotId}")
     public ResponseEntity<Object> updateChatBot(@RequestBody ChatBotDto chatBotDto,@PathVariable Integer chatBotId){
