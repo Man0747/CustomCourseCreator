@@ -20,4 +20,4 @@ The YouTube Course Generator API is designed to facilitate the creation and mana
 
 ## Note
 
-This API uses ([API Repository](https://github.com/vishnurchityala/youtube-course-gen-api)) to generate prompts and course materials. Replace the link with the actual API URL.
+This API uses ([API Repository](https://github.com/vishnurchityala/youtube-course-gen-api)) to generate prompts and course materials.
