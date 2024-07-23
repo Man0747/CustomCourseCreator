@@ -18,10 +18,6 @@ The YouTube Course Generator API is designed to facilitate the creation and mana
 
 ![Java](https://img.shields.io/badge/Java-17-blue?logo=java) | ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.0-green?logo=springboot) | ![JWT](https://img.shields.io/badge/JWT-1.0.0-yellow?logo=jsonwebtokens)
 
-## API Repository
-
-For more information and to access the API code, visit the [API Repository](http://example.com/repo).
-
 ## Note
 
 This API uses ([API Repository](https://github.com/vishnurchityala/youtube-course-gen-api)) to generate prompts and course materials. Replace the link with the actual API URL.
