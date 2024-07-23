@@ -8,9 +8,13 @@ import com.CustomCourseCreator.Entity.PromptResponse;
 import com.CustomCourseCreator.Repository.ChatBotRepo;
 import com.CustomCourseCreator.Repository.PromptRepo;
 import com.CustomCourseCreator.Repository.PromptResponseRepo;
+import com.CustomCourseCreator.Service.PythonApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -24,6 +28,9 @@ public class UserController {
 
     @Autowired
     PromptResponseRepo promptResponseRepo;
+
+    @Autowired
+    private PythonApiService pythonApiService;
 
     @GetMapping("/alone")
     public ResponseEntity<Object> userAlone(){
@@ -43,9 +50,15 @@ public class UserController {
         System.out.println("\nSaved :"+chatBot);
 
         // Saving ChatBot Entity
-        chatBotRepo.save(chatBot);
+        chatBot = chatBotRepo.save(chatBot);
+        String url = "https://web-production-00c6.up.railway.app/api/v1/video-chats/" + chatBot.getId().toString();
+        for (String source : chatBot.getSourceUrls()){
+            Map<String,String> payload = new HashMap<>();
+            payload.put("sourceUrl",source);
+            pythonApiService.postToExternalApi(url,payload);
+        }
 
-        return ResponseEntity.ok("ok");
+        return ResponseEntity.ok(chatBot);
     }
 
     // Endpoint for updating a ChatBot
@@ -66,9 +79,16 @@ public class UserController {
         System.out.println("\nUpdated :"+chatBot);
 
         // Saving ChatBot
-        chatBotRepo.save(chatBot);
+        chatBot = chatBotRepo.save(chatBot);
+        String url = "https://web-production-00c6.up.railway.app/api/v1/video-chats/" + chatBotId.toString();
+        pythonApiService.deleteFromExternalApi(url);
+        for (String source : chatBot.getSourceUrls()){
+            Map<String,String> payload = new HashMap<>();
+            payload.put("sourceUrl",source);
+            pythonApiService.postToExternalApi(url,payload);
+        }
 
-        return ResponseEntity.ok("ok");
+        return ResponseEntity.ok(chatBot);
     }
 
     // Endpoint to delete ChatBot
@@ -86,8 +106,10 @@ public class UserController {
 
         // Deleting ChatBot
         this.chatBotRepo.delete(chatBot);
+        String url = "https://web-production-00c6.up.railway.app/api/v1/video-chats/"+chatBotId;
+        pythonApiService.deleteFromExternalApi(url);
 
-        return ResponseEntity.ok("ok");
+        return ResponseEntity.ok("Deleted ChatBot : " + chatBotId.toString());
     }
 
     // Endpoint for creating Prompt
@@ -109,7 +131,11 @@ public class UserController {
 
         // Assigning values to the new entity
         prompt.setPromptText(promptDto.getPromptText());
-        promptResponse.setResponseText("trial response");
+        String url = "https://web-production-00c6.up.railway.app/api/v1/video-chats/"+chatBotId+"/prompt";
+        Map<String,String> payload = new HashMap<>();
+        payload.put("prompt", prompt.getPromptText());
+        String response = this.pythonApiService.postToExternalApi(url,payload);
+        promptResponse.setResponseText(response);
         prompt.setPromptResponse(promptResponse);
 
         // Adding prompt to ChatBot
