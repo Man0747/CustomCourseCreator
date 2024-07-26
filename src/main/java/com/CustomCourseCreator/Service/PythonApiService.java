@@ -44,4 +44,25 @@ public class PythonApiService {
         return response;
     }
 
+    public ResponseEntity<Void> deleteFromExternalApiWithPayload(String url, Object payload) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Create headers if needed (can be customized)
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+
+        // Create the HttpEntity with the payload
+        HttpEntity<Object> entity = new HttpEntity<>(payload, headers);
+
+        // Make the DELETE request with the payload
+        ResponseEntity<Void> response = restTemplate.exchange(
+                url,
+                HttpMethod.DELETE,
+                entity,
+                Void.class
+        );
+
+        return response;
+    }
+
 }

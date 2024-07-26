@@ -1,5 +1,6 @@
 package com.CustomCourseCreator.Controller;
 
+import com.CustomCourseCreator.Dto.SourceDto;
 import com.CustomCourseCreator.Dto.ChatBotDto;
 import com.CustomCourseCreator.Dto.PromptDto;
 import com.CustomCourseCreator.Entity.ChatBot;
@@ -13,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -127,6 +130,57 @@ public class UserController {
 
         return ResponseEntity.ok("Deleted ChatBot : " + chatBotId.toString());
     }
+
+    @GetMapping("/chatbots/{chatBotId}/sources")
+    public List<String> getChatBotSources(@PathVariable Integer chatBotId){
+        List<String> sources = null;
+        ChatBot chatBot = this.chatBotRepo.getReferenceById(chatBotId);
+        sources = chatBot.getSourceUrls();
+        return sources;
+    }
+
+    @PostMapping("/chatbots/{chatBotId}/sources")
+    public ResponseEntity<List<String>> addChatBotSource(@PathVariable Integer chatBotId, @RequestBody SourceDto sourceDto){
+        List<String> sources = null;
+        List<String> toAddSources = new ArrayList<>();
+        ChatBot chatBot = this.chatBotRepo.getReferenceById(chatBotId);
+        sources = chatBot.getSourceUrls();
+        if (!sources.contains(sourceDto.getSourceUrl())){
+            toAddSources.add(sourceDto.getSourceUrl());
+        }
+
+        String url = "https://web-production-00c6.up.railway.app/api/v1/video-chats/" + chatBotId.toString();
+        for (String source : toAddSources){
+            Map<String,String> payload = new HashMap<>();
+            payload.put("sourceUrl",source);
+            pythonApiService.postToExternalApi(url,payload);
+            sources.add(source);
+        }
+        chatBot.setSourceUrls(sources);
+        this.chatBotRepo.save(chatBot);
+        return ResponseEntity.ok(sources);
+    }
+
+    // Endpoint to delete a source from Vector Database.
+    @DeleteMapping("/chatbots/{chatBotId}/sources")
+    public ResponseEntity<List<String>> deleteChatBotSource(@PathVariable Integer chatBotId, @RequestBody SourceDto sourceDto){
+
+        ChatBot chatBot = this.chatBotRepo.getReferenceById(chatBotId);
+        List<String> sources = chatBot.getSourceUrls();
+        if(sources.contains(sourceDto.getSourceUrl())){
+            String url = "https://web-production-00c6.up.railway.app/api/v1/video-chats/" + chatBotId.toString()+"/source";
+            Map<String,String> payload = new HashMap<>();
+            payload.put("sourceUrl",sourceDto.getSourceUrl());
+            this.pythonApiService.deleteFromExternalApiWithPayload(url,payload);
+            sources.remove(sourceDto.getSourceUrl());
+            chatBot.setSourceUrls(sources);
+            this.chatBotRepo.save(chatBot);
+        }
+
+        return ResponseEntity.ok(null);
+    }
+
+
 
     // Endpoint for creating Prompt
     @PostMapping("/chatbots/{chatBotId}/prompt")
